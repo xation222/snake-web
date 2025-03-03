@@ -1,14 +1,15 @@
 const gameBoard = document.querySelector("#gameBoard");
+const menu = document.querySelector("#menu");
 const ctx = gameBoard.getContext("2d");
 const scoreText = document.querySelector("#scoreText");
 const resetBtn = document.querySelector("#resetBtn");
 const gameWidth = gameBoard.width;
 const gameHeight = gameBoard.height;
-const boardBackground = "white";
-const snakeColor = "lightgreen";
-const snakeBorder = "black";
+const boardBackground = "#181818";
+const snakeColor = "green";
 const foodColor = "red";
 const unitSize = 25;
+let nivel = ""
 let running = false ;
 let xVelocity = unitSize ;
 let yVelocity = 0;
@@ -26,9 +27,10 @@ let snake = [
 window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame);
 
-gameStart();
-
-function gameStart(){
+function gameStart(dificuldade){
+    nivel = dificuldade;
+    menu.style.display = "none";
+    gameBoard.style.display = "block";
     running = true;
     scoreText.textContent = score;
     createFood()
@@ -71,17 +73,19 @@ function moveSnake(){
     snake.unshift(head);
 
     // se der a volta
-    if (snake[0].x > gameWidth - unitSize) {
-        snake[0].x = 0;
-    }
-    if (snake[0].x < 0) {
-        snake[0].x = gameWidth - unitSize;
-    }
-    if (snake[0].y > gameHeight - unitSize) {
-        snake[0].y = 0;
-    }
-    if (snake[0].y < 0) {
-        snake[0].y = gameHeight - unitSize;
+    if (nivel == "Fácil") {
+        if (snake[0].x > gameWidth - unitSize) {
+            snake[0].x = 0;
+        }
+        if (snake[0].x < 0) {
+            snake[0].x = gameWidth - unitSize;
+        }
+        if (snake[0].y > gameHeight - unitSize) {
+            snake[0].y = 0;
+        }
+        if (snake[0].y < 0) {
+            snake[0].y = gameHeight - unitSize;
+        }
     }
 
     // se comer a maçã
@@ -95,10 +99,8 @@ function moveSnake(){
 };
 function drawSnake(){
     ctx.fillStyle = snakeColor;
-    ctx.strokeStyle = snakeBorder;
     snake.forEach(snakePart => {
         ctx.fillRect(snakePart.x, snakePart.y, unitSize, unitSize);
-        ctx.strokeRect(snakePart.x, snakePart.y, unitSize, unitSize);
     })
 };
 function changeDirection(event){
@@ -158,13 +160,17 @@ function checkGameOver(){
     }
 };
 function displayGameOver(){
+    clearBoard()
     ctx.font = "50px MV Boli";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#b5c6c9";
     ctx.textAlign = "center";
     ctx.fillText("GAME OVER!", gameWidth/2, gameHeight/2);
     running = false;
+    resetBtn.style.display = "block"
 };
 function resetGame(){
+    clearBoard()
+    resetBtn.style.display = "none"
     score = 0;
     xVelocity = unitSize;
     yVelocity = 0;
@@ -175,5 +181,6 @@ function resetGame(){
         {x:unitSize, y:0},
         {x:0, y:0}
     ]
-    gameStart();
+    menu.style.display = "block";
+    gameBoard.style.display = "none";
 };

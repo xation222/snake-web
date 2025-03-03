@@ -9,7 +9,12 @@
 <body>
     <div id="gameContainer">
         <canvas id="gameBoard" width="500" height="500"></canvas>
-        <div id="scoreText">0</div>
+        <div id="menu">
+            <h2>Escolha a Dificuldade:</h2>
+            <button class="botao" onclick="gameStart('Fácil')">Fácil</button>
+            <button class="botao" onclick="gameStart('Normal')">Normal</button>
+        </div>
+    <div id="scoreText">0</div>
         <button id="resetBtn">Reset</button>
     </div>
     <script src="game2.js"></script>
